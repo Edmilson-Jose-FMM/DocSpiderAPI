@@ -20,7 +20,7 @@ namespace DocSpider.Application.Services
         {
             var doc = await _spiderDbContext.Documents.FindAsync(id);
             if (doc == null)
-                return "Movie not found to be deleted";
+                return "Document not found to be deleted";
             
             doc.Doc = null;
             await _spiderDbContext.SaveChangesAsync();
@@ -32,7 +32,7 @@ namespace DocSpider.Application.Services
             var movie = await _spiderDbContext.Documents.FindAsync(id);
 
             if (movie == null)
-                throw new Exception($"Movie not found by ID: {id}");
+                throw new Exception($"Document not found by ID: {id}");
 
             return movie;
         }
