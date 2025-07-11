@@ -1,6 +1,8 @@
 ﻿using DocSpider.Application.IServices;
+using DocSpider.Domain.Entities;
 using DocSpider.Infra.Context;
 using System.Net;
+using System.Reflection.Metadata;
 
 
 namespace DocSpider.Application.Services
@@ -24,6 +26,37 @@ namespace DocSpider.Application.Services
             await _spiderDbContext.SaveChangesAsync();
             
             return "Document deleted";
+        }
+        public async Task<Documents> GetDocumentById(long id)
+        {
+            var movie = await _spiderDbContext.Documents.FindAsync(id);
+
+            if (movie == null)
+                throw new Exception($"Movie not found by ID: {id}");
+
+            return movie;
+        }
+        public async Task<bool> DeleteDocumentById(long id)
+        {
+            var movie = await _spiderDbContext.Documents.FindAsync(id);
+
+            if (movie == null)
+                throw new Exception("Document not found to be deleted");
+            _spiderDbContext.Documents.Remove(movie);
+            await _spiderDbContext.SaveChangesAsync();
+
+            return true;
+        }
+        public async Task<string> InsertDocument(Documents doc)
+        {
+
+            if (doc.Title == null)
+                throw new Exception("Title field cannot be empty");
+            await _spiderDbContext.Documents.AddAsync(doc);
+            _spiderDbContext.SaveChanges();
+
+            return $"Doc added!";
+
         }
     }
 }
