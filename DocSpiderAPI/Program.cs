@@ -1,12 +1,19 @@
 using DocSpider.Application.IServices;
 using DocSpider.Application.Services;
+using DocSpider.Infra.Context;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+
+builder.Services.AddDbContext<SpiderDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
 builder.Services.AddScoped<IDocsServices, DocsService>();
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddControllers(); https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
