@@ -1,10 +1,7 @@
 ﻿using DocSpider.Application.IServices;
 using DocSpider.Infra.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
+
 
 namespace DocSpider.Application.Services
 {
@@ -16,5 +13,17 @@ namespace DocSpider.Application.Services
             _spiderDbContext = spiderDbContext;
         }
 
+
+        public async Task<string> DeleteDocOnly(int id)
+        {
+            var doc = await _spiderDbContext.Documents.FindAsync(id);
+            if (doc == null)
+                return "Movie not found to be deleted";
+            
+            doc.Doc = null;
+            await _spiderDbContext.SaveChangesAsync();
+            
+            return "Document deleted";
+        }
     }
 }
