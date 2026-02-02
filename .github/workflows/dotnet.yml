@@ -46,5 +46,11 @@ jobs:
         with:
           name: dotnet-app
           path: C:\my-app-location
+          
+      - name: "Start Application"
+        shell: pwsh
+        run: |
+             c d C:\my-app-location
+             Start-Process "./DocSpider.API.exe"
     
 
