@@ -50,7 +50,10 @@ jobs:
       - name: "Start Application"
         shell: powershell
         run: |
-             cd C:\my-app-location
-             Start-Process "./DocSpider.API.exe"
+             Stop-Process -Name "DocSpider.API" -ErrorAction SilentlyContinue    
+             $action = New-ScheduledTaskAction -Execute "C:\my-app-location\DocSpider.API.exe" -WorkingDirectory "C:\my-app-location"
+             $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date)
+             Register-ScheduledTask -TaskName "DeployDocSpider" -Action $action -Trigger $trigger -Force
+             Start-ScheduledTask -TaskName "DeployDocSpider"
     
 
