@@ -48,7 +48,7 @@ jobs:
           path: C:\my-app-location
           
       - name: "Start Application"
-        shell: pwsh
+        shell: powershell
         run: |
              c d C:\my-app-location
              Start-Process "./DocSpider.API.exe"
