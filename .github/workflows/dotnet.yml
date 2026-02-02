@@ -50,7 +50,7 @@ jobs:
       - name: "Start Application"
         shell: powershell
         run: |
-             c d C:\my-app-location
+             cd C:\my-app-location
              Start-Process "./DocSpider.API.exe"
     
 
