@@ -16,12 +16,35 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
+        
+    - name: Restore & Build
+      run: |
+           dotnet restore
+           dotnet build --no-restore
+           
+    - name: Publish Artifacts
+      run: dotnet publish -c Release -o ./output
+    
+    - name: Upload for Deploy
+      uses: actions/upload-artifact@v4
+      with:
+        name: dotnet-app 
+        path: ./output
+
+  deploy:
+    runs-on: self-hosted
+    needs: build
+    if: github.event_name == 'push'
+    steps:
+      - name: "Deploying"
+        uses: actions/download-artifact@v4
+        with:
+          name: dotnet-app
+          path: C:\my-app-location
+    
 
